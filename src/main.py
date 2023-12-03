@@ -247,20 +247,20 @@ def train(
                     state[1],
                     state[0].get_normalized_map(),
                     state[0].done,
-                    int(
-                        max(
-                            1,
-                            score_k
-                            * math.log10(
-                                math.pow(
-                                    output - state[1],
-                                    2,
-                                )
-                                + 1
-                            ),
-                        )
-                    ),
-                    # 1,
+                    # int(
+                    #     max(
+                    #         1,
+                    #         score_k
+                    #         * math.log10(
+                    #             math.pow(
+                    #                 output - state[1],
+                    #                 2,
+                    #             )
+                    #             + 1
+                    #         ),
+                    #     )
+                    # ),
+                    1,
                 )
 
                 if result == False:

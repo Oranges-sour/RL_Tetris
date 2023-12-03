@@ -15,7 +15,7 @@ for _ in range(0, 1000):
 
 
 ccolor_que = []
-for _ in range(0, 180):
+for _ in range(0, 1000):
     k = random.randint(1, 5)
     ccolor_que.append(k)
 
@@ -221,7 +221,7 @@ class Tetris:
     ###############################################################################
 
     def check_done(self):
-        if self.game_point > 12:
+        if self.game_point > 20:
             self.done = True
             return
         for y in range(0, W):

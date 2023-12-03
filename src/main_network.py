@@ -30,7 +30,6 @@ class Network(nn.Module):
 
         self.out_channel1 = 16
         self.out_channel2 = 32
-        self.out_channel3 = 48
 
         self.conv1 = nn.Conv2d(
             in_channels=1,
@@ -40,7 +39,7 @@ class Network(nn.Module):
             device=device,
         )
         self.batchnorm1 = nn.BatchNorm2d(self.out_channel1, device=device)
-        # self.pool1 = nn.MaxPool2d(2, 2)
+
 
         self.conv2 = nn.Conv2d(
             in_channels=self.out_channel1,
@@ -49,17 +48,8 @@ class Network(nn.Module):
             padding=1,
             device=device,
         )
-        self.batchnorm2 = nn.BatchNorm2d(self.out_channel2, device=device)
-
-        self.conv3 = nn.Conv2d(
-            in_channels=self.out_channel2,
-            out_channels=self.out_channel3,
-            kernel_size=3,
-            padding=1,
-            device=device,
-        )
-        self.batchnorm3 = nn.BatchNorm2d(self.out_channel3, device=device)
-        self.pool3 = nn.MaxPool2d(2, 2)
+        self.batchnorm2 = nn.BatchNorm2d(self.out_channel3, device=device)
+        self.pool1 = nn.MaxPool2d(2, 2)
 
         self.fc1 = nn.Linear(
             7 * 3 + 10 + 10 + self.out_channel3 * int(WW / 2) * int(HH / 2),
@@ -68,10 +58,10 @@ class Network(nn.Module):
         )
         self.batchnorm4 = nn.BatchNorm1d(512, device=device)
 
-        self.fc2 = nn.Linear(512, 512, device=device)
-        self.batchnorm5 = nn.BatchNorm1d(512, device=device)
+        self.fc2 = nn.Linear(512, 256, device=device)
+        self.batchnorm5 = nn.BatchNorm1d(256, device=device)
 
-        self.fc2_v = nn.Linear(512, 1, device=device)
+        self.fc2_v = nn.Linear(256, 1, device=device)
 
         self.relu = nn.ReLU()
 
@@ -82,11 +72,9 @@ class Network(nn.Module):
 
         x = self.relu(self.batchnorm2(self.conv2(x)))
 
-        x = self.relu(self.batchnorm3(self.conv3(x)))
+        x = self.pool1(x)
 
-        x = self.pool3(x)
-
-        x = x.reshape(-1, self.out_channel3 * int(WW / 2) * int(HH / 2))
+        x = x.reshape(-1, self.out_channel2 * int(WW / 2) * int(HH / 2))
 
         x2 = x2.reshape(-1, 7 * 3 + 10 + 10)
 

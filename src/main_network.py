@@ -48,11 +48,11 @@ class Network(nn.Module):
             padding=1,
             device=device,
         )
-        self.batchnorm2 = nn.BatchNorm2d(self.out_channel3, device=device)
+        self.batchnorm2 = nn.BatchNorm2d(self.out_channel2, device=device)
         self.pool1 = nn.MaxPool2d(2, 2)
 
         self.fc1 = nn.Linear(
-            7 * 3 + 10 + 10 + self.out_channel3 * int(WW / 2) * int(HH / 2),
+            7 * 3 + 10 + 10 + self.out_channel2 * int(WW / 2) * int(HH / 2),
             512,
             device=device,
         )

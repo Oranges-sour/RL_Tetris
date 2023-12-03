@@ -22,42 +22,11 @@ WW = Tetris.W - 4
 HH = Tetris.H - 3
 
 
+
 # Dueling Q Network
 class Network(nn.Module):
     def __init__(self) -> None:
         super(Network, self).__init__()
-        self.fc1 = nn.Linear(
-            7 * 3 + 10 + 10 + 1,
-            128,
-            device=device,
-        )
-        self.batchnorm4 = nn.BatchNorm1d(128, device=device)
-
-        self.fc2 = nn.Linear(128, 128, device=device)
-        self.batchnorm5 = nn.BatchNorm1d(128, device=device)
-
-        self.fc2_v = nn.Linear(128, 1, device=device)
-
-        self.relu = nn.ReLU()
-
-    def forward(self, x, x2):
-        x2 = x2.reshape(-1, 7 * 3 + 10 + 10 + 1)
-
-        x = x2
-
-        x = self.relu(self.batchnorm4(self.fc1(x)))
-
-        x = self.relu(self.batchnorm5(self.fc2(x)))
-
-        V = self.fc2_v(x)
-
-        return V
-
-
-# Dueling Q Network
-class Network1(nn.Module):
-    def __init__(self) -> None:
-        super(Network1, self).__init__()
 
         self.out_channel1 = 16
         self.out_channel2 = 32
@@ -94,15 +63,15 @@ class Network1(nn.Module):
 
         self.fc1 = nn.Linear(
             7 * 3 + 10 + 10 + self.out_channel3 * int(WW / 2) * int(HH / 2),
-            1024,
+            512,
             device=device,
         )
-        self.batchnorm4 = nn.BatchNorm1d(1024, device=device)
+        self.batchnorm4 = nn.BatchNorm1d(512, device=device)
 
-        self.fc2 = nn.Linear(1024, 1024, device=device)
-        self.batchnorm5 = nn.BatchNorm1d(1024, device=device)
+        self.fc2 = nn.Linear(512, 512, device=device)
+        self.batchnorm5 = nn.BatchNorm1d(512, device=device)
 
-        self.fc2_v = nn.Linear(1024, 1, device=device)
+        self.fc2_v = nn.Linear(512, 1, device=device)
 
         self.relu = nn.ReLU()
 

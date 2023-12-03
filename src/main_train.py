@@ -3,9 +3,9 @@ import math
 
 times = [1]
 
-rew_pre_line = [0.5]
+rew_pre_line = [1]
 
-batch_s = [384]
+batch_s = [512]
 
 gamma = [0.99]
 
@@ -13,11 +13,11 @@ scor_k = [5]
 
 lrr = [0.003]
 
-rep_buf_s = [250000]
+rep_buf_s = [450000]
 
 
 def epsi_func(now_episode):
-    return max(0.01, 0.5 * (math.tanh(-0.01 * now_episode + 2.5) + 1))
+    return max(0.01, 0.5 * (math.tanh(-0.01 * now_episode + 0.5) + 1))
 
 
 count = 0
@@ -32,7 +32,7 @@ for x1 in rew_pre_line:
                             print(f"<<{count}:{tt}>>")
 
                             train(
-                                episode=1000,
+                                episode=2500,
                                 epsilon_func=epsi_func,
                                 gamma=x3,
                                 lr=x5,

@@ -120,7 +120,7 @@ def to_tensor_1(kk, batch_size):
 
 
 def to_tensor_2(kk, batch_size):
-    t = torch.zeros((batch_size, 3 * 7 + 10 + 10 + 1), device=device)
+    t = torch.zeros((batch_size, 3 * 7 + 10 + 10), device=device)
 
     for i in range(0, batch_size):
         p = torch.from_numpy(kk[i]).to(device=device, dtype=torch.float32)
@@ -191,7 +191,6 @@ def train(
         lr=lr,
         betas=(0.9, 0.999),
         eps=1e-08,
-        weight_decay=0.000003,
     )
     correction = nn.MSELoss()
 

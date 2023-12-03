@@ -142,7 +142,7 @@ class Tetris:
         return colored_map
 
     def get_next_other_state_features(self):
-        next = np.zeros(7 * 3 + 10 + 10 + 1)
+        next = np.zeros(7 * 3 + 10 + 10)
         cnt = 0
         # 即将来的3个块的one-hot
         for i in range(len(self.block_que) - 1, len(self.block_que) - 4, -1):
@@ -170,9 +170,6 @@ class Tetris:
                 if self.map[j][i + 2] == 0:
                     count += 1
             next[7 * 3 + 10 + i] = count
-
-        next[7 * 3 + 10 + 10] = self.game_point
-
         # print(next)
         return next
 

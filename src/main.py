@@ -4,15 +4,12 @@ import torch.nn as nn
 import torch.optim as optim
 import numpy as np
 
-import logging
-
 import copy
 
-# import gym
 import time
 import os
 
-# import pygame
+import pygame
 
 import math
 
@@ -26,13 +23,6 @@ from main_network import Network
 
 
 from torch.utils.tensorboard.writer import SummaryWriter
-
-# logging.basicConfig(
-#     level=logging.INFO,
-#     format=("%(levelname)s|%(asctime)s" "|%(pathname)s|%(lineno)d| %(message)s"),
-#     datefmt="%Y-%m-%dT%H:%M:%S",
-# )
-# logging.getLogger().setLevel(logging.INFO)
 
 
 class ReplayBuffer:
@@ -84,17 +74,17 @@ class ReplayBuffer:
 WW = Tetris.W - 4
 HH = Tetris.H - 3
 
-# 使用pygame之前必须初始化
-# pygame.init()
-# # 设置主屏窗口
-# screen = pygame.display.set_mode((WW * 20, HH * 20))
-# pygame.display.set_caption("main")
+#使用pygame之前必须初始化
+pygame.init()
+# 设置主屏窗口
+screen = pygame.display.set_mode((WW * 20, HH * 20))
+pygame.display.set_caption("main")
 
-# img = []
-# for i in range(1, 6):
-#     img.append(
-#         pygame.transform.scale(pygame.image.load(f"blocks/{i}.jpg"), (20, 20)).convert()
-#     )
+img = []
+for i in range(1, 6):
+    img.append(
+        pygame.transform.scale(pygame.image.load(f"blocks/{i}.jpg"), (20, 20)).convert()
+    )
 
 
 # cpu训练
@@ -134,23 +124,23 @@ def to_tensor_2(kk, batch_size):
 
 
 def func_render_game(sss):
-    # if render_game == True:
-    #     for event in pygame.event.get():
-    #         # 判断用户是否点了关闭按钮
-    #         if event.type == pygame.QUIT:
-    #             # 卸载所有模块
-    #             pygame.quit()
+    if render_game == True:
+        for event in pygame.event.get():
+            # 判断用户是否点了关闭按钮
+            if event.type == pygame.QUIT:
+                # 卸载所有模块
+                pygame.quit()
 
-    #     screen.fill((0, 0, 0))
-    #     ss = sss.get_colored_map()
+        screen.fill((0, 0, 0))
+        ss = sss.get_colored_map()
 
-    #     for x in range(0, HH):
-    #         for y in range(0, WW):
-    #             if ss[x][y] == 0:
-    #                 continue
-    #             screen.blit(img[int(ss[x][y]) - 1], (y * 20, x * 20))
+        for x in range(0, HH):
+            for y in range(0, WW):
+                if ss[x][y] == 0:
+                    continue
+                screen.blit(img[int(ss[x][y]) - 1], (y * 20, x * 20))
 
-    #     pygame.display.flip()
+        pygame.display.flip()
     pass
 
 
@@ -166,8 +156,7 @@ def train(
 ):
     print(f"<<train start>>")
     print(f"episode:{episode},")
-    # print(f"epsilon:{epsilon},")
-    # print(f"epsilon_decay:{epsilon_decay},")
+
     print(f"gamma:{gamma},")
     print(f"lr:{lr},")
     print(f"reward_per_line:{reward_per_line},")
@@ -179,7 +168,7 @@ def train(
 
     # 日志目录
     log_dir_num = f"{int(time.time())}"
-    # print(f"logs/{log_dir_num}")
+    print(f"logs/{log_dir_num}")
 
     env = Tetris(reward_per_line)
 
@@ -203,7 +192,6 @@ def train(
 
     replay = ReplayBuffer(replay_buffer_size)
 
-    # os.system(f"mkdir logs/{log_dir_num}")
     writer = SummaryWriter(f"logs/{log_dir_num}")
 
     # 开始时的时间，用来记录训练了多久
@@ -293,10 +281,6 @@ def train(
             func_render_game(possible_state_with_reward[action][0])
 
             sum_reward += possible_state_with_reward[action][1] / reward_per_line
-            # if possible_state_with_reward[action][1] > 0:
-            #     print(
-            #         f"OHHHHH! network expect V:{V_with_possible_state[action][0]}"
-            #     )
 
             env.clone_from(possible_state_with_reward[action][0])
 
@@ -322,20 +306,14 @@ def train(
                     done_batch = torch.tensor(
                         batch[4], dtype=torch.float32, device=device
                     )
-                    # done_batch = done_batch.unsqueeze(1)
+
                     q_v = network(s_batch, next_3_block)
                     # print(q_v)
                     with torch.no_grad():
                         new_q_v = target_network(
                             new_s_batch, next_3_block
                         )
-                        # new_q_v = network(new_s_batch, next_3_block)
                     new_q_v = new_q_v.reshape(-1)
-
-                    # new_q_v = new_q_v.max(0)[0]
-                    # print(new_q_v)
-                    # print(reward_batch)
-                    # print(1 - done_batch)
 
                     expect_q_v = reward_batch + gamma * new_q_v * (1 - done_batch)
 

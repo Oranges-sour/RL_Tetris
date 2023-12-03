@@ -17,12 +17,12 @@ import os
 import math
 
 
-from tetris_1 import Tetris
-from tetris_1 import get_all_possible_state
+from tetris import Tetris
+from tetris import get_all_possible_state
 
 from sum_tree import SumTree
 
-from main1_network import Network
+from main_network import Network
 
 
 from torch.utils.tensorboard.writer import SummaryWriter

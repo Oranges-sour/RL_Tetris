@@ -6,368 +6,13 @@ import numpy as np
 W = 14
 H = 21
 
-bblock_que = [
-    1,
-    3,
-    1,
-    4,
-    1,
-    3,
-    3,
-    5,
-    6,
-    5,
-    7,
-    7,
-    3,
-    1,
-    3,
-    5,
-    7,
-    1,
-    6,
-    7,
-    4,
-    7,
-    2,
-    2,
-    7,
-    2,
-    3,
-    3,
-    5,
-    2,
-    1,
-    5,
-    3,
-    3,
-    5,
-    4,
-    7,
-    3,
-    1,
-    6,
-    1,
-    3,
-    4,
-    6,
-    6,
-    6,
-    2,
-    3,
-    6,
-    5,
-    1,
-    6,
-    3,
-    4,
-    5,
-    5,
-    5,
-    7,
-    7,
-    3,
-    2,
-    5,
-    5,
-    4,
-    6,
-    2,
-    4,
-    6,
-    3,
-    1,
-    6,
-    4,
-    1,
-    2,
-    6,
-    1,
-    5,
-    1,
-    6,
-    2,
-    3,
-    3,
-    7,
-    3,
-    6,
-    1,
-    5,
-    3,
-    6,
-    7,
-    3,
-    5,
-    6,
-    5,
-    3,
-    2,
-    1,
-    5,
-    4,
-    3,
-    4,
-    7,
-    3,
-    4,
-    5,
-    4,
-    2,
-    4,
-    2,
-    2,
-    2,
-    1,
-    4,
-    2,
-    2,
-    2,
-    1,
-    4,
-    4,
-    5,
-    3,
-    6,
-    1,
-    6,
-    1,
-    6,
-    5,
-    1,
-    3,
-    3,
-    4,
-    6,
-    7,
-    6,
-    5,
-    4,
-    5,
-    5,
-    4,
-    6,
-    6,
-    5,
-    3,
-    1,
-    2,
-    4,
-    3,
-    1,
-    5,
-    6,
-    6,
-    2,
-    4,
-    1,
-    4,
-    1,
-    5,
-    6,
-    4,
-    3,
-    1,
-    3,
-    7,
-    4,
-    6,
-    4,
-    6,
-    7,
-    1,
-    1,
-    1,
-    6,
-    6,
-    4,
-    4,
-    6,
-    4,
-    2,
-    2,
-    6,
-    2,
-    3,
-    7,
-    5,
-    7,
-    7,
-    2,
-    1,
-    2,
-    5,
-    3,
-    5,
-    2,
-    3,
-    4,
-    3,
-    4,
-    2,
-    5,
-    7,
-    3,
-    3,
-    4,
-    4,
-    5,
-    5,
-    4,
-    5,
-    6,
-    5,
-    5,
-    5,
-    7,
-    2,
-    2,
-    2,
-    2,
-    2,
-    1,
-    1,
-    1,
-    3,
-    7,
-    3,
-    5,
-    4,
-    4,
-    1,
-    3,
-    4,
-    4,
-    5,
-    7,
-    7,
-    1,
-    4,
-    3,
-    1,
-    1,
-    6,
-    7,
-    1,
-    5,
-    5,
-    7,
-    4,
-    4,
-    1,
-    7,
-    4,
-    7,
-    6,
-    7,
-    6,
-    6,
-    3,
-    3,
-    7,
-    2,
-    3,
-    5,
-    1,
-    7,
-    4,
-    4,
-    3,
-    3,
-    6,
-    6,
-    4,
-    3,
-    5,
-    6,
-    4,
-    1,
-    7,
-    4,
-    7,
-    6,
-    1,
-    4,
-    4,
-    5,
-    2,
-    7,
-    4,
-    3,
-    3,
-    2,
-    4,
-    7,
-    3,
-    4,
-    6,
-    2,
-    4,
-    7,
-    5,
-    6,
-    5,
-    2,
-    6,
-    4,
-    6,
-    2,
-    5,
-    2,
-    6,
-    4,
-    3,
-    6,
-    1,
-    3,
-    1,
-    6,
-    4,
-    7,
-    4,
-    5,
-    5,
-    4,
-    7,
-    1,
-    4,
-    5,
-    4,
-    3,
-    3,
-    2,
-    1,
-    6,
-    5,
-    1,
-    3,
-    6,
-    5,
-    4,
-    2,
-    5,
-    7,
-    4,
-    5,
-    6,
-    4,
-    1,
-    4,
-    6,
-    2,
-    3,
-    3,
-    5,
-    6,
-    5,
-    1,
-    1,
-    4,
-    5,
-    4,
-    4,
-    4,
-]
+bblock_que = []
+
+#固定序列随机
+rng = random.Random(114514)
+for _ in range(0, 1000):
+    bblock_que.append(rng.randint(1, 7))
+
 
 ccolor_que = []
 for _ in range(0, 180):
@@ -382,21 +27,16 @@ def is_scolor_block(k, C):
     return False
 
 
-# def get_all_possible_state(now_state):
-
-
-# def dfs_state(last_state,action):
-
-
 class Tetris:
     W = W
     H = H
 
-    def __init__(self) -> None:
+    def __init__(self, reward_per_line) -> None:
+        self.reward_per_line = reward_per_line
         return
 
     def clone(self):
-        new_t = Tetris()
+        new_t = Tetris(self.reward_per_line)
 
         new_t.map = deepcopy(self.map)
 
@@ -417,6 +57,7 @@ class Tetris:
             for j in range(0, W):
                 self.map[i][j] = other_t.map[i][j]
 
+        self.reward_per_line = other_t.reward_per_line
         self.game_point = other_t.game_point
         self.game_point_temp = other_t.game_point_temp
         self.can_next_block = other_t.can_next_block
@@ -430,24 +71,24 @@ class Tetris:
     def reset(self):
         # 游戏地图
         self.map = [
-            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],
-            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],
-            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],
-            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],
-            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],
-            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],
-            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],
-            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],
-            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],
-            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],
-            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],
-            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],
-            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],
-            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],
-            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],
-            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],
-            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],
-            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],
+            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],  # 0
+            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],  # 1
+            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],  # 2
+            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],  # 3
+            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],  # 4
+            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],  # 5
+            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],  # 6
+            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],  # 7
+            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],  # 8
+            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],  # 9
+            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],  # 10
+            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],  # 11
+            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],  # 12
+            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],  # 13
+            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],  # 14
+            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],  # 15
+            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],  # 16
+            [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],  # 17
             [7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7],
             [7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7],
             [7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7],
@@ -466,8 +107,6 @@ class Tetris:
 
         self.done = False
 
-        self.count = 0
-
         self.block_que = copy(bblock_que)
 
         self.color_que = copy(ccolor_que)
@@ -485,7 +124,7 @@ class Tetris:
                     and self.map[x][y + 2] != 7
                     and self.map[x][y + 2] != self.C
                 ):
-                    normalized_map[x][y] = 0.5
+                    normalized_map[x][y] = 1
                 if self.map[x][y + 2] == self.C:
                     normalized_map[x][y] = 1
         # print(normalized_map)
@@ -502,37 +141,80 @@ class Tetris:
 
         return colored_map
 
-    def step(self, action):
+    def get_next_other_state_features(self):
+        next = np.zeros(7 * 3 + 10 + 10 + 1)
+        cnt = 0
+        # 即将来的3个块的one-hot
+        for i in range(len(self.block_que) - 1, len(self.block_que) - 4, -1):
+            next[self.block_que[i] - 1 + cnt * 7] = 1
+            cnt += 1
+        # print("____________________________________________")
+        # for x in range(0, H - 3):
+        #     for y in range(0, W - 4):
+        #         print(f"{self.map[x][y + 2]:<3}", end="")
+        #     print("")
+        temp = np.zeros(10)
+        # 每一列最高块的高度
+        for i in range(0, W - 4):
+            count = H - 3
+            for j in range(0, H - 3):
+                if is_scolor_block(self.map[j][i + 2], self.C):
+                    count = j
+                    break
+            temp[i] = count
+            next[7 * 3 + i] = (H - 3 + 1) - count - 1
+        # 每一列的空洞数量
+        for i in range(0, W - 4):
+            count = 0
+            for j in range(int(temp[i]), H - 3):
+                if self.map[j][i + 2] == 0:
+                    count += 1
+            next[7 * 3 + 10 + i] = count
+
+        next[7 * 3 + 10 + 10] = self.game_point
+
+        # print(next)
+        return next
+
+    def try_set_next_block(self):
+        if self.can_next_block:
+            self.set_block()
+
+    def step(self, type, param1, param2):
         if self.done:
-            return (self.get_normalized_map(), 0, True)
+            return 0
 
-        self.count += 1
+        if type == 1:
+            for i in range(0, param1):
+                self.turn()
+        if type == 2:
+            if param1 == 1:
+                for _ in range(0, param2):
+                    self.left()
+            if param1 == 2:
+                for _ in range(0, param2):
+                    self.right()
 
-        self.check_done()
-        self.set_block()
-        if self.count % 2 == 0:
-            self.auto_move()
+        if type == 3:
+            while not self.can_next_block:
+                self.auto_move()
+
         self.clear()
-
-        # if action == 0:
-        #     _
-        if action == 1:
-            self.left()
-        if action == 2:
-            self.right()
-        if action == 3:
-            self.turn()
 
         reward = 0
         if self.game_point_temp != 0:
-            print("OHHHHH!")
+            # print("OHHHHH!")
             rrr = 0
             for i in range(1, self.game_point_temp + 1):
                 rrr += 1
             self.game_point_temp = 0
-            reward += rrr * 10
+            reward += rrr * self.reward_per_line
+        reward += 0.1
+        # print(self.reward_per_line)
 
-        return (self.get_normalized_map(), reward, False)
+        self.check_done()
+
+        return reward
 
     ###############################################################################
     ###############################################################################
@@ -542,11 +224,11 @@ class Tetris:
     ###############################################################################
 
     def check_done(self):
-        if self.game_point > 10:
+        if self.game_point > 12:
             self.done = True
             return
         for y in range(0, W):
-            if is_scolor_block(self.map[5][y], self.C):
+            if is_scolor_block(self.map[4][y], self.C):
                 self.done = True
                 break
 
@@ -958,3 +640,91 @@ class Tetris:
             self.map[move_X + 1][move_Y - 1] = self.C
             self.map[move_X + 1][move_Y] = self.C
             self.map[move_X + 2][move_Y - 1] = self.C
+
+
+def get_map_hash(map):
+    p = int(1e9 + 7)
+
+    ss = 0
+    for i in range(0, H - 3):
+        for j in range(0, W - 4):
+            ss = (ss * 131 + int(map[i][j] * 2) * 10159) % p
+
+    return ss
+
+
+class StatePool:
+    def __init__(self, n) -> None:
+        self.state_pool = []
+        self.cnt = 0
+
+        for _ in range(0, n):
+            tt = Tetris(1)
+            tt.reset()
+            self.state_pool.append(tt)
+
+    def get(self):
+        k = self.state_pool[self.cnt]
+        self.cnt += 1
+        # print(self.cnt)
+        return k
+
+    def reset(self):
+        self.cnt = 0
+
+
+state_pool = StatePool(1000)
+
+
+def get_all_possible_state(now_state: Tetris, debug=False):
+    global state_pool
+
+    state_pool.reset()
+
+    dd = dict()
+    dfs_state(now_state, dd, 1, 0, debug)
+
+    li = []
+    for v in dd.values():
+        li.append(v)
+    return li
+
+
+def dfs_state(last_state: Tetris, dd: dict, depth, reward, debug=False):
+    global state_pool
+
+    if depth == 1:
+        for i in range(0, 4):
+            k = state_pool.get()
+            k.clone_from(last_state)
+
+            m = k.step(depth, i, 0)
+
+            dfs_state(k, dd, depth + 1, m + reward)
+
+    if depth == 2:
+        for i in range(0, 8):
+            k = state_pool.get()
+            k.clone_from(last_state)
+            # k = last_state.clone()
+            m = k.step(depth, 1, i)
+
+            dfs_state(k, dd, depth + 1, m + reward)
+        for i in range(0, 8):
+            k = state_pool.get()
+            k.clone_from(last_state)
+            # k = last_state.clone()
+            m = k.step(depth, 2, i)
+
+            dfs_state(k, dd, depth + 1, m + reward)
+
+    if depth == 3:
+        k = state_pool.get()
+        k.clone_from(last_state)
+        # k = last_state.clone()
+        m = k.step(depth, 0, 0)
+
+        hs = get_map_hash(k.get_normalized_map())
+
+        if not hs in dd:
+            dd[hs] = (k, m + reward)

@@ -16,7 +16,7 @@ device = "cpu"
 if torch.cuda.is_available():
     device = "cuda"
 
-from tetris_1 import Tetris
+from tetris import Tetris
 
 WW = Tetris.W - 4
 HH = Tetris.H - 3

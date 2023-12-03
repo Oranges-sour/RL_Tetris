@@ -1,5 +1,6 @@
 import numpy as np
 
+#基于线段树的加和树
 
 def ls(x):
     return int(x * 2)

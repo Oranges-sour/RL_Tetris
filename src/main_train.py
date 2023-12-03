@@ -1,4 +1,4 @@
-from main1 import train
+from main import train
 import math
 
 times = [1]

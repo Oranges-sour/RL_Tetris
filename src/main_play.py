@@ -58,6 +58,7 @@ network = Network()
 
 
 network = torch.load("model/1699627378_500.pth")
+network.eval()
 
 
 # 游戏次数

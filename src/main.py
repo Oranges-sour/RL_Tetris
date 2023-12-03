@@ -49,13 +49,18 @@ class ReplayBuffer:
 
             self.writer += 1
 
+            result = True
+
             if self.writer >= self.capacity:
-                print(f"replay buffer full once")
                 self.writer = 1
-            return
+                result = False
+
+            return result
 
         self.buffer.append(kk)
         self.tree.insert(len(self.buffer) - 1, priority)
+
+        return True
 
     def sample(self, batch_size):
         if len(self.buffer) < batch_size:
@@ -74,7 +79,7 @@ class ReplayBuffer:
 WW = Tetris.W - 4
 HH = Tetris.H - 3
 
-#使用pygame之前必须初始化
+# 使用pygame之前必须初始化
 pygame.init()
 # 设置主屏窗口
 screen = pygame.display.set_mode((WW * 20, HH * 20))
@@ -234,13 +239,10 @@ def train(
                     x2 = torch.from_numpy(env.get_next_other_state_features()).to(
                         device=device, dtype=torch.float32
                     )
-                    x3np = np.zeros(1)
-                    x3np[0] = state[1]
-                    x3 = torch.from_numpy(x3np).to(device=device, dtype=torch.float32)
                     output = network(x, x2)
                     V_with_possible_state.append((output, state))
 
-                replay.push(
+                result = replay.push(
                     env.get_normalized_map(),
                     env.get_next_other_state_features(),
                     state[1],
@@ -261,6 +263,9 @@ def train(
                     ),
                     # 1,
                 )
+
+                if result == False:
+                    print(f"replay buffer full once, episode:{now_episode}")
             network.train()
 
             # 寻找output最大的
@@ -310,9 +315,7 @@ def train(
                     q_v = network(s_batch, next_3_block)
                     # print(q_v)
                     with torch.no_grad():
-                        new_q_v = target_network(
-                            new_s_batch, next_3_block
-                        )
+                        new_q_v = target_network(new_s_batch, next_3_block)
                     new_q_v = new_q_v.reshape(-1)
 
                     expect_q_v = reward_batch + gamma * new_q_v * (1 - done_batch)

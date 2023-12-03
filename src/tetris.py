@@ -221,7 +221,7 @@ class Tetris:
     ###############################################################################
 
     def check_done(self):
-        if self.game_point > 20:
+        if self.game_point > 50:
             self.done = True
             return
         for y in range(0, W):

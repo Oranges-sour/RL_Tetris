@@ -17,7 +17,7 @@ rep_buf_s = [450000]
 
 
 def epsi_func(now_episode):
-    return max(0.01, 0.5 * (math.tanh(-0.01 * now_episode + 0.5) + 1))
+    return max(0.01, 0.5 * (math.tanh(-0.01 * now_episode + 1.5) + 1))
 
 
 count = 0
@@ -32,7 +32,7 @@ for x1 in rew_pre_line:
                             print(f"<<{count}:{tt}>>")
 
                             train(
-                                episode=2500,
+                                episode=1500,
                                 epsilon_func=epsi_func,
                                 gamma=x3,
                                 lr=x5,

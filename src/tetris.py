@@ -206,7 +206,7 @@ class Tetris:
                 rrr += 1
             self.game_point_temp = 0
             reward += rrr * self.reward_per_line
-        reward += 0.1
+        #reward += 0.1
         # print(self.reward_per_line)
 
         self.check_done()

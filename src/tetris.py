@@ -15,7 +15,7 @@ for _ in range(0, 1000):
 
 
 ccolor_que = []
-for _ in range(0, 180):
+for _ in range(0, 1000):
     k = random.randint(1, 5)
     ccolor_que.append(k)
 
@@ -142,7 +142,7 @@ class Tetris:
         return colored_map
 
     def get_next_other_state_features(self):
-        next = np.zeros(7 * 3 + 10 + 10 + 1)
+        next = np.zeros(7 * 3 + 10 + 10)
         cnt = 0
         # 即将来的3个块的one-hot
         for i in range(len(self.block_que) - 1, len(self.block_que) - 4, -1):
@@ -170,9 +170,6 @@ class Tetris:
                 if self.map[j][i + 2] == 0:
                     count += 1
             next[7 * 3 + 10 + i] = count
-
-        next[7 * 3 + 10 + 10] = self.game_point
-
         # print(next)
         return next
 
@@ -209,7 +206,7 @@ class Tetris:
                 rrr += 1
             self.game_point_temp = 0
             reward += rrr * self.reward_per_line
-        reward += 0.1
+        #reward += 0.1
         # print(self.reward_per_line)
 
         self.check_done()
@@ -224,7 +221,7 @@ class Tetris:
     ###############################################################################
 
     def check_done(self):
-        if self.game_point > 12:
+        if self.game_point > 50:
             self.done = True
             return
         for y in range(0, W):

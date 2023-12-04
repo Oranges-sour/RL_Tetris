@@ -120,7 +120,7 @@ def to_tensor_1(kk, batch_size):
 
 
 def to_tensor_2(kk, batch_size):
-    t = torch.zeros((batch_size, 3 * 7 + 10 + 10 + 1), device=device)
+    t = torch.zeros((batch_size, 3 * 7 + 10 + 10), device=device)
 
     for i in range(0, batch_size):
         p = torch.from_numpy(kk[i]).to(device=device, dtype=torch.float32)
@@ -191,7 +191,6 @@ def train(
         lr=lr,
         betas=(0.9, 0.999),
         eps=1e-08,
-        weight_decay=0.000003,
     )
     correction = nn.MSELoss()
 
@@ -206,8 +205,6 @@ def train(
     running_reward = None
 
     last_save_running_reward = 0
-
-    running_loss = 0
 
     for now_episode in range(1, episode + 1):
         epsilon = epsilon_func(now_episode)
@@ -248,20 +245,20 @@ def train(
                     state[1],
                     state[0].get_normalized_map(),
                     state[0].done,
-                    int(
-                        max(
-                            1,
-                            score_k
-                            * math.log10(
-                                math.pow(
-                                    output - state[1],
-                                    2,
-                                )
-                                + 1
-                            ),
-                        )
-                    ),
-                    # 1,
+                    # int(
+                    #     max(
+                    #         1,
+                    #         score_k
+                    #         * math.log10(
+                    #             math.pow(
+                    #                 output - state[1],
+                    #                 2,
+                    #             )
+                    #             + 1
+                    #         ),
+                    #     )
+                    # ),
+                    1,
                 )
 
                 if result == False:
@@ -328,10 +325,7 @@ def train(
                     loss.backward()
                     optimizer.step()
 
-                    running_loss = running_loss * 0.95 + loss.item() * 0.05
-
                     writer.add_scalar("loss", loss.item(), now_episode)
-                    writer.add_scalar("running_loss", running_loss, now_episode)
 
         writer.add_scalar("reward", sum_reward, now_episode)
         writer.add_scalar("e", epsilon, now_episode)
@@ -341,12 +335,12 @@ def train(
         else:
             running_reward = running_reward * 0.9 + sum_reward * 0.1
 
-        # if running_reward > 10 and running_reward > last_save_running_reward:
-        #     last_save_running_reward = running_reward
-        #     print(f"save model: rewawd:{running_reward}")
-        #     torch.save(network, f"model/{log_dir_num}_max_reward.pth")
-        # if now_episode % 250 == 0:
-        #     torch.save(network, f"model/{log_dir_num}_{now_episode}.pth")
+        if running_reward > 10 and running_reward > last_save_running_reward:
+            last_save_running_reward = running_reward
+            print(f"save model: rewawd:{running_reward}")
+            torch.save(network, f"model/{log_dir_num}_max_reward.pth")
+        if now_episode % 250 == 0:
+            torch.save(network, f"model/{log_dir_num}_{now_episode}.pth")
 
         # if now_episode % lenl == 0:
         #     print(
@@ -357,3 +351,5 @@ def train(
         #     # )
 
     print(f"finish: total_time:{time.time() - time0:.2f}s")
+
+    torch.save(network,f"model/{log_dir_num}_final.pth")

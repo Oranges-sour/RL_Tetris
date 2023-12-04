@@ -28,19 +28,29 @@ HH = Tetris.H - 3
 # 使用pygame之前必须初始化
 pygame.init()
 # 设置主屏窗口
-screen = pygame.display.set_mode((WW * 20, HH * 20))
+screen = pygame.display.set_mode((WW * 30 + 150, HH * 30))
 screen.fill((156, 156, 156))
 pygame.display.set_caption("main")
 
 img = []
-for i in range(1, 6):
+for i in range(0, 6):
     img.append(
-        pygame.transform.scale(pygame.image.load(f"blocks/{i}.jpg"), (20, 20)).convert()
+        pygame.transform.scale(pygame.image.load(f"blocks/{i}.jpg"), (30, 30)).convert()
     )
+
+img.append(
+    pygame.transform.scale(pygame.image.load(f"blocks/6.jpg"), (60, 60)).convert()
+)
+
+img.append(
+    pygame.transform.scale(
+        pygame.image.load(f"blocks/7.jpg"), (WW * 30, HH * 30)
+    ).convert()
+)
 
 
 # cpu训练
-device = "cuda"
+device = "cpu"
 
 # 游戏环境
 env = Tetris(1)
@@ -57,7 +67,7 @@ render_game = True
 network = Network()
 
 
-network = torch.load("model/1701667197_final.pth")
+network = torch.load("model/1701667197_final.pth", map_location=device)
 network.eval()
 
 
@@ -74,7 +84,7 @@ def state_tensor(s):
     return x
 
 
-def func_render_game(sss):
+def func_render_game(sss, sum_reward):
     if render_game == True:
         for event in pygame.event.get():
             # 判断用户是否点了关闭按钮
@@ -82,14 +92,28 @@ def func_render_game(sss):
                 # 卸载所有模块
                 pygame.quit()
 
-        screen.fill((0, 0, 0))
+        screen.fill((73, 177, 230))
+
+        font = pygame.font.SysFont("Arial", 36)
+        f = font.render(f"{sum_reward}", True, (255, 255, 255))
+
+        screen.blit(f, (WW * 31 + 50, 420))
+        screen.blit(img[7], (30, 0))
+        screen.blit(img[6], (WW * 31 + 50, 120))
+
         ss = sss.get_colored_map()
 
         for x in range(0, HH):
             for y in range(0, WW):
                 if ss[x][y] == 0:
                     continue
-                screen.blit(img[int(ss[x][y]) - 1], (y * 20, x * 20))
+                screen.blit(img[int(ss[x][y])], (30 + y * 30, x * 30))
+        for x in range(0, HH):
+            y = WW + 1
+            screen.blit(img[0], (y * 30, x * 30))
+        for x in range(0, HH):
+            y = 0
+            screen.blit(img[0], (y * 30, x * 30))
 
         pygame.display.flip()
 
@@ -136,15 +160,19 @@ def play():
 
             action = max_state_p
 
-            func_render_game(possible_state_with_reward[action][0])
-
             sum_reward += possible_state_with_reward[action][1]
             if possible_state_with_reward[action][1] > 0:
-                print(f"OHHHHH! network expect V:{V_with_possible_state[action][0]} {sum_reward}")
+                print(
+                    f"OHHHHH! network expect V:{V_with_possible_state[action][0]} {sum_reward}"
+                )
+
+            func_render_game(possible_state_with_reward[action][0], sum_reward)
 
             env.clone_from(possible_state_with_reward[action][0])
 
-            time.sleep(0.005)
+            time.sleep(0.01)
 
 
 play()
+
+input("")

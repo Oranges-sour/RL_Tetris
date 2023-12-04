@@ -8,10 +8,11 @@ H = 21
 
 bblock_que = []
 
-#固定序列随机
-rng = random.Random(1)
+# 固定序列随机
+rng = random.Random(114522)
 for _ in range(0, 2000):
     bblock_que.append(rng.randint(1, 7))
+    #bblock_que.append(4)
 
 
 ccolor_que = []
@@ -206,7 +207,7 @@ class Tetris:
                 rrr += 1
             self.game_point_temp = 0
             reward += rrr * self.reward_per_line
-        #reward += 0.1
+        # reward += 0.1
         # print(self.reward_per_line)
 
         self.check_done()

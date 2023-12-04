@@ -40,7 +40,7 @@ for i in range(1, 6):
 
 
 # cpu训练
-device = "cpu"
+device = "cuda"
 
 # 游戏环境
 env = Tetris(1)
@@ -57,7 +57,7 @@ render_game = True
 network = Network()
 
 
-network = torch.load("model/1699627378_500.pth")
+network = torch.load("model/1701667197_final.pth")
 network.eval()
 
 
@@ -140,7 +140,7 @@ def play():
 
             sum_reward += possible_state_with_reward[action][1]
             if possible_state_with_reward[action][1] > 0:
-                print(f"OHHHHH! network expect V:{V_with_possible_state[action][0]}")
+                print(f"OHHHHH! network expect V:{V_with_possible_state[action][0]} {sum_reward}")
 
             env.clone_from(possible_state_with_reward[action][0])
 

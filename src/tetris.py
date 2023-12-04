@@ -9,14 +9,14 @@ H = 21
 bblock_que = []
 
 #固定序列随机
-rng = random.Random(114514)
-for _ in range(0, 1000):
+rng = random.Random(1)
+for _ in range(0, 2000):
     bblock_que.append(rng.randint(1, 7))
 
 
 ccolor_que = []
-for _ in range(0, 1000):
-    k = random.randint(1, 5)
+for _ in range(0, 2000):
+    k = rng.randint(1, 5)
     ccolor_que.append(k)
 
 
@@ -221,11 +221,11 @@ class Tetris:
     ###############################################################################
 
     def check_done(self):
-        if self.game_point > 50:
+        if self.game_point > 180:
             self.done = True
             return
         for y in range(0, W):
-            if is_scolor_block(self.map[4][y], self.C):
+            if is_scolor_block(self.map[1][y], self.C):
                 self.done = True
                 break
 

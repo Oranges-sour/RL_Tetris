@@ -62,7 +62,7 @@ network.eval()
 
 
 # 游戏次数
-episode = 12
+episode = 1
 
 # 一个episode的游戏最大步数
 game_step = 3000
@@ -144,7 +144,7 @@ def play():
 
             env.clone_from(possible_state_with_reward[action][0])
 
-            time.sleep(0.05)
+            time.sleep(0.005)
 
 
 play()

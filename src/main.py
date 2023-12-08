@@ -182,8 +182,7 @@ def train(
 
     # 双网络交替
     network = Network()
-    #在现有模型上继续训练
-    network = torch.load("model/1701667197_final.pth", map_location=device)
+
     target_network = Network()
     target_network.load_state_dict(network.state_dict())
 

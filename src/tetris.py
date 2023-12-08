@@ -7,17 +7,24 @@ W = 14
 H = 21
 
 bblock_que = []
-
-#固定序列随机
-rng = random.Random(114514)
-for _ in range(0, 1000):
-    bblock_que.append(rng.randint(1, 7))
-
-
 ccolor_que = []
-for _ in range(0, 1000):
-    k = random.randint(1, 5)
-    ccolor_que.append(k)
+
+
+def random_block_color_que(seed):
+    global bblock_que
+    global ccolor_que
+
+    # 固定序列随机
+    rng = random.Random(seed)
+    for _ in range(0, 1000):
+        bblock_que.append(rng.randint(1, 7))
+
+    for _ in range(0, 1000):
+        k = random.randint(1, 5)
+        ccolor_que.append(k)
+
+
+random_block_color_que(114514)
 
 
 # 是否是不移动的颜色块
@@ -68,7 +75,7 @@ class Tetris:
         self.block_que = copy(other_t.block_que)
         self.color_que = copy(other_t.color_que)
 
-    def reset(self):
+    def reset(self, random_bc_que=False, random_bc_seed=0):
         # 游戏地图
         self.map = [
             [7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 7],  # 0
@@ -106,6 +113,9 @@ class Tetris:
         self.C = 0
 
         self.done = False
+
+        if random_bc_que:
+            random_block_color_que(random_bc_seed)
 
         self.block_que = copy(bblock_que)
 
@@ -206,7 +216,7 @@ class Tetris:
                 rrr += 1
             self.game_point_temp = 0
             reward += rrr * self.reward_per_line
-        #reward += 0.1
+        # reward += 0.1
         # print(self.reward_per_line)
 
         self.check_done()

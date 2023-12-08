@@ -182,6 +182,8 @@ def train(
 
     # 双网络交替
     network = Network()
+    #在现有模型上继续训练
+    network = torch.load("model/1701667197_final.pth", map_location=device)
     target_network = Network()
     target_network.load_state_dict(network.state_dict())
 
@@ -339,7 +341,7 @@ def train(
             last_save_running_reward = running_reward
             print(f"save model: rewawd:{running_reward}")
             torch.save(network, f"model/{log_dir_num}_max_reward.pth")
-        if now_episode % 250 == 0:
+        if now_episode % 500 == 0:
             torch.save(network, f"model/{log_dir_num}_{now_episode}.pth")
 
         # if now_episode % lenl == 0:
@@ -352,4 +354,4 @@ def train(
 
     print(f"finish: total_time:{time.time() - time0:.2f}s")
 
-    torch.save(network,f"model/{log_dir_num}_final.pth")
+    torch.save(network, f"model/{log_dir_num}_final.pth")

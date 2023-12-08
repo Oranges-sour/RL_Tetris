@@ -11,13 +11,13 @@ gamma = [0.99]
 
 scor_k = [5]
 
-lrr = [0.003]
+lrr = [0.001]
 
 rep_buf_s = [450000]
 
 
 def epsi_func(now_episode):
-    return max(0.01, 0.3 * 0.5 * (math.tanh(-0.01 * now_episode + 1.5) + 1))
+    return max(0.01, 0.05 * 0.5 * (math.tanh(-0.01 * now_episode + 1.5) + 1))
 
 
 count = 0

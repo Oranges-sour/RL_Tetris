@@ -16,11 +16,14 @@ def random_block_color_que(seed):
 
     # 固定序列随机
     rng = random.Random(seed)
+
+    bblock_que.clear()
     for _ in range(0, 1000):
         bblock_que.append(rng.randint(1, 7))
 
+    ccolor_que.clear()
     for _ in range(0, 1000):
-        k = random.randint(1, 5)
+        k = rng.randint(1, 5)
         ccolor_que.append(k)
 
 

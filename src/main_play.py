@@ -40,7 +40,7 @@ for i in range(1, 6):
 
 
 # cpu训练
-device = "cuda"
+device = "cpu"
 
 # 游戏环境
 env = Tetris(1)
@@ -57,7 +57,7 @@ render_game = True
 network = Network()
 
 
-network = torch.load("model/1701667197_final.pth")
+network = torch.load("model/1701667197_final.pth",map_location=device)
 network.eval()
 
 
